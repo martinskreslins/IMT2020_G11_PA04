@@ -22,7 +22,12 @@ function NewsList(){
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('http://newsapi.org/v2/top-headlines?country=lv&category=business&apiKey=d51fa1ab74cc4b40986e6674ba96d9a3')
+    fetch("https://newscatcher.p.rapidapi.com/v1/latest_headlines?lang=en&media=True", {
+	"method": "GET",
+	"headers": {
+		"x-rapidapi-key": "9bbc9326d3msha21930f500bfb76p19b110jsn3e0b091908ad",
+		"x-rapidapi-host": "newscatcher.p.rapidapi.com"
+	}})
     .then((response) => response.json())
     .then((json) => setData(json.articles))
     .catch((error) => console.error(error))
@@ -33,16 +38,16 @@ function NewsList(){
         {isLoading ? <ActivityIndicator/> : (
          <FlatList
          data={data}
-         keyExtractor={({ id }) => id}
+         keyExtractor={({ id }, _id) => id}
          renderItem={({ item }) => (
 
            <View style={{marginBottom:15, backgroundColor: "#ccc"}}>
             <Image source={{uri : item.urlToImage}} style = {styles.image}/>
             <Text style = {styles.headline}>{item.title}</Text>
-           
+         <Text>{item.summary}</Text>
             <Button
               title="Go to Article"
-              onPress={() => Linking.openURL(item.url)}
+              onPress={() => Linking.openURL(item.link)}
             />
            </View>
           )}
